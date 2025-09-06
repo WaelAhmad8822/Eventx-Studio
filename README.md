@@ -14,7 +14,7 @@ A comprehensive full-stack event management system built with React, Node.js, an
 - **Ticket Management**: View all tickets, check-in attendees, and manage bookings
 - **Analytics**: Comprehensive reports on attendee demographics, popular categories, and revenue
 - **User Management**: View and manage all system user
-- ** if you want login as admin you will find the information in seed **
+- **if you want login as admin you will find the information in seed**
 
 ### For Attendees (Users)
 - **Event Discovery**: Browse and search events with filters
@@ -184,6 +184,7 @@ This project is licensed under the MIT License.
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
