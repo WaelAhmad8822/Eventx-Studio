@@ -34,7 +34,7 @@ A comprehensive full-stack event management system built with React, Node.js, an
 
 ### Backend
 - **Node.js** with Express.js
-- **MongoDB** with Mongoose 
+- **MongoDB** with Mongoose Alts
 - **JWT** for authentication
 - **bcryptjs** for password hashing
 - **QRCode** for ticket generation
@@ -180,6 +180,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
