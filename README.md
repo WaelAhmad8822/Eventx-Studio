@@ -4,8 +4,8 @@ A comprehensive full-stack event management system built with React, Node.js, an
 
 🌐 **Live Demo**: [https://client-5w565fokk-waels-projects-522b86d6.vercel.app/](https://client-5w565fokk-waels-projects-522b86d6.vercel.app/)
 
-
-      **Backend Deploy**: https://eventx-studio-production-a8ab.up.railway.app
+**Backend Deploy**:
+       https://eventx-studio-production-a8ab.up.railway.app
 
      
 
@@ -188,6 +188,7 @@ This project is licensed under the MIT License.
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
