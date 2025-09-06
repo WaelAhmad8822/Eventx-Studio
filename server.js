@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:5173',                    // Development
-    'https://eventx-studio-jgiy.vercel.app', // Your Vercel frontend
+    'https://eventx-studio-jgiy.vercel.app/api', // Your Vercel frontend
     'https://your-custom-domain.vercel.app'     // Custom domain (if you have one)
   ],
   credentials: true
@@ -50,4 +50,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
