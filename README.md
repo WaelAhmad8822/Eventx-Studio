@@ -54,7 +54,7 @@ A comprehensive full-stack event management system built with React, Node.js, an
 3. Create a `.env` file in the root directory:
 ```env
 # Server Config
-PORT=5000
+PORT=3000
 NODE_ENV=development
 
 # MongoDB Config
@@ -183,6 +183,7 @@ This project is licensed under the MIT License.
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
