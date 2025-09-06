@@ -4,7 +4,23 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(),tailwindcss(),],
+  plugins: [react(), tailwindcss()],
+  base: '/',
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    minify: 'terser',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          charts: ['recharts'],
+          qr: ['qrcode.react']
+        }
+      }
+    }
+  },
   server: {
     proxy: {
       '/api': {
