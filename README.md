@@ -9,6 +9,7 @@ A comprehensive full-stack event management system built with React, Node.js, an
 
   ### Admin
   **email**: wael@gmail.com 
+  
   **password**:wael1234
 
 ## Features
@@ -179,6 +180,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
