@@ -46,7 +46,7 @@ A comprehensive full-stack event management system built with React, Node.js, an
 - **Recharts** for analytics and charts
 - **QRCode.react** for QR code display
 - **React Toastify** for notifications
-- **Custom CSS** for styling (no Tailwind as requested)
+- **Custom CSS** for styling 
 
 ## Installation & Setup
 
@@ -180,6 +180,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
