@@ -9,7 +9,14 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5173',                    // Development
+    'https://client-5w565fokk-waels-projects-522b86d6.vercel.app', // Your Vercel frontend
+    'https://your-custom-domain.vercel.app'     // Custom domain (if you have one)
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
