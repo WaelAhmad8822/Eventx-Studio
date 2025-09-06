@@ -8,9 +8,9 @@ A comprehensive full-stack event management system built with React, Node.js, an
        https://eventx-studio-production-a8ab.up.railway.app
 
   ### Admin
-  **email**: wael@gmail.com 
-  
+  **email**: wael@gmail.com  
   **password**:wael1234
+  #### only run seedAdmin can create an user=> role Admin
 
 ## Features
 
@@ -180,6 +180,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
