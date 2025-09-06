@@ -3,7 +3,8 @@
 A comprehensive full-stack event management system built with React, Node.js, and MongoDB. EventX Studio provides separate interfaces for event organizers (Admin) and attendees (Users) with features like event creation, ticket booking, QR code generation, and analytics.
 
 🌐 **Live Demo**: [https://eventx-studio-three.vercel.app/](https://eventx-studio-three.vercel.app/)
-     eventx-studio-oskd-2yrom4lax-waels-projects-522b86d6.vercel.app
+
+     [https://eventx-studio-oskd-2yrom4lax-waels-projects-522b86d6.vercel.app/]eventx-studio-oskd-2yrom4lax-waels-projects-522b86d6.vercel.app
 
 ## Features
 
@@ -182,4 +183,5 @@ This project is licensed under the MIT License.
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
