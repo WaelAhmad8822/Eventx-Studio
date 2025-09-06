@@ -7,7 +7,9 @@ A comprehensive full-stack event management system built with React, Node.js, an
 **Backend Deploy**:
        https://eventx-studio-production-a8ab.up.railway.app
 
-     
+  ### Admin
+  **email**: wael@gmail.com 
+  **password**:wael1234
 
 ## Features
 
@@ -177,6 +179,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
