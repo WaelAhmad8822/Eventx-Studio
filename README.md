@@ -48,12 +48,6 @@ A comprehensive full-stack event management system built with React, Node.js, an
 - **React Toastify** for notifications
 - **Custom CSS** for styling 
 
-## Installation & Setup
-
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (local or cloud)
-- Git
 
 ### Backend Setup
 
@@ -180,6 +174,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
