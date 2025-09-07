@@ -66,10 +66,7 @@ MONGO_URI=mongodb+srv://username:password@cluster0.ccvcvio.mongodb.net/eventx?re
 JWT_SECRET=949ee009a58d5d5412601bd2fb5c297bfb967e175065dff17c6d4a7bc1c479b347093f36ee43d265cf8f435efe2b99b01ba110c41dc440101ee85e83487a375
 JWT_EXPIRES=1h
 
-# Refresh Token Config
-JWT_REFRESH_SECRET=272c5b03f29068ac5c2a5f07d9740cb1ea5eb4aec9c4e9bcb17d950a72e7b91122cc395e85259995ee79cc23727d97597963af8a15fd284f25e40fba605a41c4
-JWT_REFRESH_EXPIRES=1d
-```
+
 
 
 
@@ -174,6 +171,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
