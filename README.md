@@ -66,8 +66,7 @@ MONGO_URI=mongodb+srv://username:password@cluster0.ccvcvio.mongodb.net/eventx?re
 JWT_SECRET=949ee009a58d5d5412601bd2fb5c297bfb967e175065dff17c6d4a7bc1c479b347093f36ee43d265cf8f435efe2b99b01ba110c41dc440101ee85e83487a375
 JWT_EXPIRES=1h
 
-
-
+```
 
 
 The backend will run on `http://localhost:3000`
@@ -171,6 +170,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
