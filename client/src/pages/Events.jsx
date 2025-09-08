@@ -164,8 +164,17 @@ const Events = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <div key={event._id} className="bg-white shadow rounded-lg p-4 hover:shadow-lg transition">
-                <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
-                  <span className="text-gray-500">Event Image</span>
+                <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center mb-4 overflow-hidden">
+                  {event.image ? (
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-full object-cover"
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }}
+                    />
+                  ) : (
+                    <span className="text-gray-500">Event Image</span>
+                  )}
                 </div>
 
                 <div>
