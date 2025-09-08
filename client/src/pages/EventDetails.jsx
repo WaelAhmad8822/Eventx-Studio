@@ -128,8 +128,17 @@ const EventDetails = () => {
           {/* Event Details */}
           <div className="lg:col-span-2 bg-white shadow rounded-lg p-6">
             {/* Event Image */}
-            <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center mb-6">
-              <span className="text-gray-500 text-lg">Event Image</span>
+            <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center mb-6 overflow-hidden">
+              {event.image ? (
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }}
+                />
+              ) : (
+                <span className="text-gray-500 text-lg">Event Image</span>
+              )}
             </div>
 
             {/* Event Info */}
