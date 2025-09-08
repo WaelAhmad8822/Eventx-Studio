@@ -35,10 +35,10 @@ router.get('/dashboard', adminAuth, async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
     
-    // Get upcoming events
+    // Get upcoming events (respect event status)
     const upcomingEvents = await Event.find({
       date: { $gte: new Date() },
-      status: { $in: ['upcoming', 'active'] }
+      status: 'upcoming'
     }).sort({ date: 1 }).limit(5);
     
     // Get events by status
@@ -164,11 +164,21 @@ router.get('/analytics', adminAuth, async (req, res) => {
       attendeeDemographics = await User.aggregate([
         { $match: { role: 'user' } },
         {
-          $group: {
-            _id: '$gender',
-            count: { $sum: 1 }
+          $project: {
+            genderLabel: {
+              $switch: {
+                branches: [
+                  { case: { $eq: [{ $toLower: '$gender' }, 'male'] }, then: 'Male' },
+                  { case: { $eq: [{ $toLower: '$gender' }, 'female'] }, then: 'Female' },
+                  { case: { $eq: [{ $toLower: '$gender' }, 'other'] }, then: 'Other' }
+                ],
+                default: 'Other'
+              }
+            }
           }
-        }
+        },
+        { $group: { _id: '$genderLabel', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } }
       ]);
     } catch (error) {
       console.log('Demographics aggregation failed:', error.message);
@@ -179,59 +189,73 @@ router.get('/analytics', adminAuth, async (req, res) => {
       ];
     }
 
-    // Age groups - with error handling for date conversion
+    // Age groups - compute accurately from stored Date or String and return labeled buckets
     let ageGroups = [];
     try {
       ageGroups = await User.aggregate([
         { $match: { role: 'user', dateOfBirth: { $exists: true, $ne: null } } },
         {
           $addFields: {
-            age: {
-              $divide: [
-                { 
-                  $subtract: [
-                    new Date(), 
-                    { 
-                      $dateFromString: { 
-                        dateString: '$dateOfBirth',
-                        onError: new Date('1990-01-01') // fallback date if conversion fails
-                      } 
-                    } 
-                  ] 
-                },
-                31557600000 // milliseconds in a year
+            // Normalize dateOfBirth to a Date regardless of stored type
+            _dobDate: {
+              $cond: [
+                { $eq: [ { $type: '$dateOfBirth' }, 'date' ] },
+                '$dateOfBirth',
+                { $dateFromString: { dateString: '$dateOfBirth', onError: new Date('1990-01-01') } }
               ]
             }
           }
         },
         {
-          $bucket: {
-            groupBy: '$age',
-            boundaries: [0, 18, 25, 35, 45, 55, 65, 100],
-            default: 'Other',
-            output: { count: { $sum: 1 } }
+          $addFields: {
+            ageYears: {
+              $floor: {
+                $divide: [ { $subtract: [ new Date(), '$_dobDate' ] }, 31557600000 ]
+              }
+            }
           }
-        }
+        },
+        {
+          $project: {
+            _id: 0,
+            bucket: {
+              $switch: {
+                branches: [
+                  { case: { $lt: ['$ageYears', 18] }, then: '0-17' },
+                  { case: { $and: [ { $gte: ['$ageYears', 18] }, { $lt: ['$ageYears', 25] } ] }, then: '18-24' },
+                  { case: { $and: [ { $gte: ['$ageYears', 25] }, { $lt: ['$ageYears', 35] } ] }, then: '25-34' },
+                  { case: { $and: [ { $gte: ['$ageYears', 35] }, { $lt: ['$ageYears', 45] } ] }, then: '35-44' },
+                  { case: { $and: [ { $gte: ['$ageYears', 45] }, { $lt: ['$ageYears', 55] } ] }, then: '45-54' },
+                  { case: { $and: [ { $gte: ['$ageYears', 55] }, { $lt: ['$ageYears', 65] } ] }, then: '55-64' }
+                ],
+                default: '65+'
+              }
+            }
+          }
+        },
+        { $group: { _id: '$bucket', count: { $sum: 1 } } },
+        { $sort: { _id: 1 } }
       ]);
     } catch (dateError) {
-      console.log('Date conversion failed, using fallback age groups:', dateError.message);
-      // Fallback: simple age groups without date calculation
-      ageGroups = [
-        { _id: '0-17', count: 0 },
-        { _id: '18-24', count: 0 },
-        { _id: '25-34', count: 0 },
-        { _id: '35-44', count: 0 },
-        { _id: '45-54', count: 0 },
-        { _id: '55-64', count: 0 },
-        { _id: '65+', count: 0 }
-      ];
+      console.log('Age aggregation failed:', dateError.message);
+      ageGroups = [];
     }
 
-    // Popular categories
+    // Popular categories by ticket sales (counts tickets per event category, excluding cancelled tickets)
     let popularCategories = [];
     try {
-      popularCategories = await Event.aggregate([
-        { $group: { _id: '$category', count: { $sum: 1 } } },
+      popularCategories = await Ticket.aggregate([
+        { $match: { status: { $ne: 'cancelled' } } },
+        {
+          $lookup: {
+            from: 'events',
+            localField: 'event',
+            foreignField: '_id',
+            as: 'event'
+          }
+        },
+        { $unwind: '$event' },
+        { $group: { _id: '$event.category', count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]);
     } catch (error) {
@@ -268,17 +292,20 @@ router.get('/analytics', adminAuth, async (req, res) => {
       topEvents = [];
     }
 
-    // Location distribution
+    // Location distribution (normalize city names and exclude empty values)
     let locationDistribution = [];
     try {
       locationDistribution = await User.aggregate([
-        { $match: { role: 'user', 'location.city': { $exists: true } } },
+        { $match: { role: 'user' } },
         {
-          $group: {
-            _id: '$location.city',
-            count: { $sum: 1 }
+          $project: {
+            cityNorm: {
+              $trim: { input: { $ifNull: ['$location.city', ''] } }
+            }
           }
         },
+        { $match: { cityNorm: { $ne: '' } } },
+        { $group: { _id: '$cityNorm', count: { $sum: 1 } } },
         { $sort: { count: -1 } },
         { $limit: 10 }
       ]);
@@ -456,7 +483,7 @@ router.put('/tickets/:id/check-in', adminAuth, async (req, res) => {
       return res.status(404).json({ message: 'Ticket not found' });
     }
 
-    if (ticket.status === 'checked-in') {
+    if (ticket.status === 'used') {
       return res.status(400).json({ message: 'Ticket already checked in' });
     }
 
@@ -464,7 +491,7 @@ router.put('/tickets/:id/check-in', adminAuth, async (req, res) => {
       return res.status(400).json({ message: 'Cannot check in cancelled ticket' });
     }
 
-    ticket.status = 'checked-in';
+    ticket.status = 'used';
     ticket.checkInTime = new Date();
     await ticket.save();
 
