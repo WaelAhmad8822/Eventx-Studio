@@ -5,7 +5,7 @@ A comprehensive full-stack event management system built with React, Node.js, an
 🌐 **Live Demo**: [https://eventx-studio-isk.vercel.app](https://eventx-studio-isk.vercel.app)
 
 **Backend Deploy**:
-       https://eventx-studio-production-a8ab.up.railway.app
+       https://eventx-studio-update-production.up.railway.app/
 
   ### Admin
   **email**: wael@gmail.com  
@@ -170,6 +170,7 @@ eventx-studio/
 ## Support
 
 For support and questions, please contact waeeel989@gmail.com
+
 
 
 
