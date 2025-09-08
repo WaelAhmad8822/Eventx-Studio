@@ -127,10 +127,24 @@ const Home = () => {
                   key={event._id}
                   className="bg-white shadow rounded-lg overflow-hidden hover:shadow-lg transition"
                 >
-                  <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-500">Event Image</span>
+                  <div className="w-full h-48 bg-gray-200 flex items-center justify-center overflow-hidden">
+                    {event.image ? (
+                      <img
+                        src={event.image}
+                        alt={event.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }}
+                      />
+                    ) : (
+                      <span className="text-gray-500">Event Image</span>
+                    )}
                   </div>
                   <div className="p-4">
+                    <div className="mb-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${event.status === 'active' ? 'bg-green-100 text-green-800' : event.status === 'upcoming' ? 'bg-blue-100 text-blue-800' : event.status === 'closed' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800'}`}>
+                        {event.status?.charAt(0).toUpperCase() + event.status?.slice(1)}
+                      </span>
+                    </div>
                     <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
                     <p className="text-gray-600 text-sm mb-2 line-clamp-2">{event.description}</p>
                     <div className="flex items-center text-sm text-gray-500 mb-2">
