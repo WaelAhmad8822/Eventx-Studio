@@ -192,7 +192,18 @@ const AdminEvents = () => {
                   <tr key={event._id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="h-12 w-12 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 text-sm">IMG</div>
+                        <div className="h-12 w-12 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center text-gray-500 text-sm">
+                          {event.image ? (
+                            <img
+                              src={event.image}
+                              alt={event.title}
+                              className="h-full w-full object-cover"
+                              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }}
+                            />
+                          ) : (
+                            'IMG'
+                          )}
+                        </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">{event.title}</div>
                           <div className={`text-xs px-2 py-1 rounded-full ${getCategoryColor(event.category)}`}>{event.category}</div>
@@ -281,7 +292,7 @@ const EventModal = ({ event, onClose, onSave }) => {
   const [formData, setFormData] = useState({
     title: '', description: '', date: '', time: '',
     venue: { name: '', address: '', city: '' },
-    price: '', totalSeats: '', category: 'conference',
+    price: '', totalSeats: '', category: 'conference', status: 'upcoming', image: '',
     tags: '', requirements: ''
   });
   const [loading, setLoading] = useState(false);
@@ -297,6 +308,8 @@ const EventModal = ({ event, onClose, onSave }) => {
         price: event.price || '',
         totalSeats: event.totalSeats || '',
         category: event.category || 'conference',
+        status: event.status || 'upcoming',
+        image: event.image || '',
         tags: event.tags?.join(', ') || '',
         requirements: event.requirements?.join(', ') || ''
       });
@@ -351,6 +364,19 @@ const EventModal = ({ event, onClose, onSave }) => {
                 <select name="category" className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value={formData.category} onChange={handleChange} required>
                   {['conference','workshop','seminar','concert','sports','exhibition','other'].map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase()+c.slice(1)}</option>)}
                 </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Status *</label>
+                <select name="status" className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value={formData.status} onChange={handleChange} required>
+                  {['upcoming','active','closed','cancelled'].map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase()+s.slice(1)}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                <input type="url" name="image" placeholder="https://..." className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" value={formData.image} onChange={handleChange} />
               </div>
             </div>
 
