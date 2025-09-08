@@ -107,37 +107,50 @@ const MyTickets = () => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {tickets.map((ticket) => (
-              <div key={ticket._id} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{ticket.event.title}</h3>
-                    <p className="text-gray-600 text-sm">Seat: {ticket.seatNumber}</p>
+              <div key={ticket._id} className="bg-white p-0 rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden">
+                {ticket.event?.image && (
+                  <div className="w-full h-40 bg-gray-100 overflow-hidden">
+                    <img src={ticket.event.image} alt={ticket.event.title} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center ${getStatusColor(ticket.status)}`}>
-                    {getStatusIcon(ticket.status)}
-                    <span className="ml-1 capitalize">{ticket.status}</span>
-                  </span>
-                </div>
+                )}
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-1">{ticket.event.title}</h3>
+                      <p className="text-gray-600 text-sm">Seat: {ticket.seatNumber}</p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(ticket.status)}`}>
+                        <span className="capitalize">{ticket.status}</span>
+                      </span>
+                      {ticket.event?.status && (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${ticket.event.status === 'active' ? 'bg-green-100 text-green-800' : ticket.event.status === 'upcoming' ? 'bg-blue-100 text-blue-800' : ticket.event.status === 'closed' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800'}`}>
+                          Event: {ticket.event.status}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-                <div className="space-y-2 text-sm text-gray-600 mb-4">
-                  <div><strong>Date:</strong> {formatDate(ticket.event.date)} at {formatTime(ticket.event.time)}</div>
-                  <div><strong>Venue:</strong> {ticket.event.venue.name}, {ticket.event.venue.city}</div>
-                  <div><strong>Price:</strong> ${ticket.price}</div>
-                  <div><strong>Booked on:</strong> {formatDate(ticket.bookingDate)}</div>
-                  {ticket.checkInTime && <div><strong>Checked in:</strong> {formatDate(ticket.checkInTime)}</div>}
-                </div>
+                  <div className="space-y-2 text-sm text-gray-600 mb-4">
+                    <div><strong>Date:</strong> {formatDate(ticket.event.date)} at {formatTime(ticket.event.time)}</div>
+                    <div><strong>Venue:</strong> {ticket.event.venue.name}, {ticket.event.venue.city}</div>
+                    <div><strong>Price:</strong> ${ticket.price}</div>
+                    <div><strong>Booked on:</strong> {formatDate(ticket.bookingDate)}</div>
+                    {ticket.checkInTime && <div><strong>Checked in:</strong> {formatDate(ticket.checkInTime)}</div>}
+                  </div>
 
-                <div className="flex justify-between items-center pt-4 border-t">
-                  <span className="text-sm font-bold text-blue-600">Payment ID: {ticket.paymentId}</span>
-                  <div className="flex space-x-2">
-                    <button onClick={() => setSelectedTicket(ticket)} className="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-sm">
-                      View QR Code
-                    </button>
-                    {ticket.status === 'active' && (
-                      <button onClick={() => handleCancelTicket(ticket._id)} className="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 text-sm">
-                        Cancel
+                  <div className="flex justify-between items-center pt-4 border-t">
+                    <span className="text-sm font-bold text-blue-600">Payment ID: {ticket.paymentId}</span>
+                    <div className="flex space-x-2">
+                      <button onClick={() => setSelectedTicket(ticket)} className="px-3 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-50 text-sm">
+                        View QR Code
                       </button>
-                    )}
+                      {ticket.status === 'active' && (
+                        <button onClick={() => handleCancelTicket(ticket._id)} className="px-3 py-1 border border-red-600 text-red-600 rounded hover:bg-red-50 text-sm">
+                          Cancel
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
